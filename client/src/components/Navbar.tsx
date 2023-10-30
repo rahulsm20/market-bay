@@ -22,23 +22,29 @@ const Navbar = () => {
     authenticate();
   }, []);
   return (
-    <nav className="top-0 m-0 border-b border-gray-700 p-5 sticky backdrop-blur-sm grid grid-cols-2 lg:grid-cols-3 justify-between items-center z-10">
+    <nav className="top-0 m-0 border-b border-gray-700 p-5 sticky backdrop-blur-sm grid grid-cols-2 lg:grid-cols-3 justify-between items-center z-10 text-xs sm:text-base">
       <img src="/ship.svg" className="w-10 hidden lg:block" />
-      <ul className="flex gap-5 justify-center items-center text-xs md:text-sm">
+      <ul className="flex gap-5 justify-center items-center">
         <div className="flex gap-2">
           <li>
             <Link to="/">Home</Link>
           </li>
-          <li>
-            <Link to="/add">List an item</Link>
-          </li>
-          <li>
-            <Link to="/profile">Transactions</Link>
-          </li>
+          {isAuthenticated ? (
+            <>
+              <li>
+                <Link to="/add">List an item</Link>
+              </li>
+              <li>
+                <Link to="/profile">Profile</Link>
+              </li>
+            </>
+          ) : (
+            <></>
+          )}
         </div>
       </ul>
       {isAuthenticated ? (
-        <li className="flex gap-2 justify-end items-end">
+        <li className="flex gap-2 justify-end items-center">
           <p>{user.username}</p>
           <Link
             to="/login"

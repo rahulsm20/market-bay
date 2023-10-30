@@ -21,6 +21,7 @@ export type ItemType = {
   bids: BidType[];
   createdAt: string;
   updatedAt: string;
+  sold:boolean;
 };
 
 const initialState: ItemState = {
@@ -28,6 +29,7 @@ const initialState: ItemState = {
   item: {
     _id: "",
     name: "",
+    sold:false,
     price: 0,
     bids: [
       {

@@ -67,16 +67,6 @@ export const updateBid  = async(data:FieldValues,id:string)=>{
     }
 }
 
-export const getBids = async(id:string)=>{
-    try{
-        const res = await api.get(`/bids/${id}`)
-        return res.data
-    }
-    catch(err){
-        console.log(`${err}`)
-    }
-}
-
 export const fetchItemById = async(id:string)=>{
     try{
         const res = await api.get(`/items/${id}`)
@@ -90,6 +80,26 @@ export const fetchItemById = async(id:string)=>{
 export const deleteItem = async(id:string|undefined)=>{
     try{
         const res = await api.delete(`/items/${id}`)
+        return res.data
+    }
+    catch(err){
+        console.log(`${err}`)
+    }
+}
+
+export const sellitem = async(id:string,user:string,item:string)=>{
+    try{
+        const res = await api.post(`/items/sell/${id}`,{user,item})
+        return res.data
+    }
+    catch(err){
+        console.log(`${err}`)
+    }
+}
+
+export const getUserDetails = async(user:string)=>{
+    try{
+        const res = await api.get(`/auth/${user}`)
         return res.data
     }
     catch(err){

@@ -27,7 +27,7 @@ const Items = () => {
       <Navbar />
       <p className="mt-5 text-2xl font-bold">Popular Items</p>
       <div className="p-10 flex items-center justify-center">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-20 lg:gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-20">
           {items.length > 0 ? (
             items.map((item, key) => {
               return <ItemCard item={item} key={key} />;

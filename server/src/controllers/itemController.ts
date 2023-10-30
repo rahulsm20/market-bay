@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import itemModel from "../models/item.model";
 import s3 from "../utils/aws";
 import { v4 as uuidv4 } from "uuid";
+import userModel from "../models/user.model";
 
 export default {
   createItem: async (req: any, res: Response) => {
@@ -118,6 +119,25 @@ export default {
       res.status(201).json(bid);
     } catch (err) {
       res.status(400).json("Failed to update bid");
+    }
+  },
+  sellItem: async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const { user, price } = req.body;
+      const updatedItem = await itemModel.findByIdAndUpdate(id, {
+        $set: {
+          sold: true,
+        },
+      });
+      const updatedUser = await userModel.findByIdAndUpdate(user, {
+        $push: {
+          itemsBought: { item: id, price: price },
+        },
+      });
+      res.status(200).json({ item: updatedItem, user: updatedUser });
+    } catch (err) {
+      res.status(400).json(`${err}`);
     }
   },
 };

@@ -21,6 +21,7 @@ export type Item = {
     }
     createdAt: string;
     updatedAt: string;
+    sold:boolean;
   };
 };
 
@@ -48,4 +49,17 @@ export type BidType = {
     username:string;
     email:string;
   }
+}
+
+export type UserType = {
+  _id:string;
+  username:string;
+  email:string;
+  itemsBought:ItemBoughtType[]
+}
+
+export type ItemBoughtType = {
+  item:ItemType,
+  price:number,
+  user:string
 }
