@@ -24,16 +24,15 @@ const ItemPage = () => {
   const isAuthenticated = useSelector(
     (state: RootState) => state.authData.authenticated
   );
-  
+
   useEffect(() => {
-    const fetchHighestBid = async()=>{
-      try{
-        dispatch(getHighestBid())
+    const fetchHighestBid = async () => {
+      try {
+        dispatch(getHighestBid());
+      } catch (err) {
+        console.log(`${err}`);
       }
-      catch(err){
-        console.log(`${err}`)
-      }
-    }
+    };
     const fetchItem = async (id: string) => {
       try {
         const res = await fetchItemById(id);
@@ -42,10 +41,9 @@ const ItemPage = () => {
         console.log(`${err}`);
       }
     };
-    fetchItem(id || "")
-    .then(()=>fetchHighestBid())
+    fetchItem(id || "").then(() => fetchHighestBid());
   }, [dispatch, id]);
-  // const obj = 
+  // const obj =
   // console.log(obj)
   return (
     <div className="flex flex-col">
@@ -56,7 +54,10 @@ const ItemPage = () => {
       <div className="flex justify-center mt-5">
         {item ? (
           <div className="flex flex-col md:flex-row bg-gray-900 m-10 w-3/4 rounded-xl gap-5">
-            <img src={item.image.url} className="w-full md:w-80 rounded-t-xl md:rounded-l-xl" />
+            <img
+              src={item.image.url}
+              className="w-full md:w-1/3 rounded-t-xl md:rounded-l-xl md:rounded-r-none"
+            />
             <div className="p-5 flex flex-col gap-2">
               <div className="flex flex-col justify-start items-start gap-2">
                 <p className="text-xl md:text-4xl">{item.name}</p>
@@ -79,7 +80,9 @@ const ItemPage = () => {
                 </div>
                 <p className="flex gap-1 text-xs sm:text-sm md:text-base lg:text-xl items-center">
                   <span>Listed by</span>
-                  <span className="text-blue-300 text-xl">{item.seller.username}</span>
+                  <span className="text-blue-300 text-xl">
+                    {item.seller.username}
+                  </span>
                 </p>
               </div>
               <span className="flex text-xs lg:text-base">
@@ -98,43 +101,46 @@ const ItemPage = () => {
                   Login to bid on this item
                 </a>
               ) : item.seller.username != user?.username ? (
-                // {
-                  item?.bids.find((bid)=>bid?.user?.username==user?.username) ?
-                <UpdateBidModal id={item._id}/>
-                  :
-                <BidModal id={item._id} />
+                item?.bids.find(
+                  (bid) => bid?.user?.username == user?.username
+                ) ? (
+                  <UpdateBidModal id={item._id} />
+                ) : (
+                  <BidModal id={item._id} />
+                )
               ) : (
                 <></>
               )}
-              {
-                item.bids.length>0 ?
-                <p className="flex font-medium text-lg">All bids</p>
-                  :
-                  <></>
-              }
               {item.bids.length > 0 ? (
-                item.bids.map((bid,key) => {
-                  return (
-                    <div key={key}>
-                      <div className="grid grid-cols-2">
-                        <div>
-                          <p className="flex gap-4">
-                            {bid?.user?.username}
-                            <span className="text-green-400">
-                              {bid?.price?.toLocaleString("en-IN", {
-                                style: "currency",
-                                currency: "INR",
-                              })}
-                            </span>
-                          </p>
+                <p className="flex font-medium text-lg">All bids</p>
+              ) : (
+                <></>
+              )}
+              <div className="flex flex-col lg:flex-row">
+                {item.bids.length > 0 ? (
+                  item.bids.map((bid, key) => {
+                    return (
+                      <div key={key}>
+                        <div className="grid grid-cols-2">
+                          <div>
+                            <p className="flex gap-4">
+                              {bid?.user?.username}
+                              <span className="text-green-400">
+                                {bid?.price?.toLocaleString("en-IN", {
+                                  style: "currency",
+                                  currency: "INR",
+                                })}
+                              </span>
+                            </p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })
-              ) : (
-                <></>
-              )}
+                    );
+                  })
+                ) : (
+                  <></>
+                )}
+              </div>
             </div>
             {item.seller.username == user?.username ? (
               <DeleteButton id={id} />
