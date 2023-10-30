@@ -24,5 +24,15 @@ export default {
         catch(err){
             res.status(400).json(`${err}`)
         }
+    },
+    getBidsByUserID:async(req:Request,res:Response)=>{
+        const {user_id} = req.params
+        try{
+            const bids = await bidModel.find({user:user_id})
+            res.status(200).json(bids)
+        }
+        catch(err){
+            res.status(400).json(`${err}`)
+        }
     }
 }

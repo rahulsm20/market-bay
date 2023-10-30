@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { fetchItemById, getBids } from "../api";
 import BidModal from "../components/BidModal";
 import Navbar from "../components/Navbar";
@@ -18,16 +18,15 @@ const ItemPage = () => {
     dispatch(setBids(res));
     return;
   };
-  const fetchItem = async(id:string)=>{
-    try{
-      const res = await fetchItemById(id)
-      dispatch(getItemByID(res))
-      console.log(res)
+  const fetchItem = async (id: string) => {
+    try {
+      const res = await fetchItemById(id);
+      dispatch(getItemByID(res));
+      console.log(res);
+    } catch (err) {
+      console.log(`${err}`);
     }
-    catch(err){
-      console.log(`${err}`)
-    }
-  }
+  };
   const item: ItemType | undefined = useSelector(
     (state: RootState) => state.itemData.item
   );
@@ -38,7 +37,9 @@ const ItemPage = () => {
     (state: RootState) => state.itemData.highestBid
   );
   const user = useSelector((state: RootState) => state.authData.user);
-
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.authData.authenticated
+  );
   useEffect(() => {
     // const item_data = localStorage.getItem(`item_${id}`);
     // const bids_data = localStorage.getItem(`itembids_${id}`);
@@ -49,7 +50,7 @@ const ItemPage = () => {
     //   console.log(item)
     // } else {
     // dispatch(getItemByID(id));
-    fetchItem(id||"")
+    fetchItem(id || "");
     fetchBids(id || "");
     // }
     // localStorage.setItem(`item_${id}`, JSON.stringify(item));
@@ -65,22 +66,33 @@ const ItemPage = () => {
       </div>
       <div className="flex justify-center mt-5">
         {item ? (
-          <div className="flex flex-col md:flex-row bg-gray-900 m-10 w-3/4 rounded-xl">
+          <div className="flex flex-col md:flex-row bg-gray-900 m-10 w-2/3 rounded-xl gap-5">
             <img src={item.image.url} className="w-80 rounded-l-xl" />
-            <div className="p-5">
-              <div className="flex flex-col justify-start items-start">
-                <p className="text-sm lg:text-4xl">{item.name}</p>
-                <p>{formatPrice(item.price)}</p>
-                {highestBid ? (
-                  <p>Current highest bid {formatPrice(highestBid.price)}</p>
-                ) : (
-                  <></>
-                )}
+            <div className="p-5 flex flex-col gap-2">
+              <div className="flex flex-col justify-start items-start gap-2">
+                <p className="text-sm md:text-4xl">{item.name}</p>
+                <div className="flex gap-5 items-center">
+                  {highestBid ? (
+                    <div>
+                      <p className="font-medium text-primary text-xl line-through">
+                        {formatPrice(item.price)}
+                      </p>
+                      <p>Current highest bid</p>
+                      <p className="text-primary flex text-2xl">
+                        {formatPrice(highestBid.price)}
+                      </p>
+                    </div>
+                  ) : (
+                    <p className="font-medium text-primary text-2xl">
+                      {formatPrice(item.price)}
+                    </p>
+                  )}
+                </div>
+                <p className="flex gap-1 text-sm sm:text-xs md:text-base">
+                  <span>Sold by</span>
+                  <span className="text-blue-500">{item.seller.username}</span>
+                </p>
               </div>
-              <p className="flex gap-1 text-xs lg:text-base">
-                <span>Sold by</span>
-                <span className="text-blue-500">{item.seller.username}</span>
-              </p>
               <p className="flex text-xs lg:text-base">
                 Listed on {formatDate(item.createdAt)}
               </p>
@@ -89,17 +101,24 @@ const ItemPage = () => {
               ) : (
                 <></>
               )}
-              {item.seller.username == user.username ? (
-                <></>
-              ) : (
+              {!isAuthenticated ? (
+                <a
+                  href="/login"
+                  className="flex btn bg-slate-200 hover:bg-slate-50 justify-start items-center normal-case text-black hover:text-black mt-5"
+                >
+                  Login to bid on this item
+                </a>
+              ) : item.seller.username != user.username ? (
                 <BidModal id={item._id} />
+              ) : (
+                <></>
               )}
-              <div>
-                <p className="flex font-medium text-lg">All bids</p>
-                <div className="grid grid-cols-2">
-                  {bids.length > 0 ? (
-                    bids.map((bid) => {
-                      return (
+              {bids.length > 0 ? (
+                bids.map((bid) => {
+                  return (
+                    <div>
+                      <p className="flex font-medium text-lg">All bids</p>
+                      <div className="grid grid-cols-2">
                         <div>
                           <p className="flex gap-4">
                             {bid.user.username}
@@ -111,20 +130,19 @@ const ItemPage = () => {
                             </span>
                           </p>
                         </div>
-                      );
-                    })
-                  ) : (
-                    <></>
-                  )}
-                </div>
-              </div>
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <></>
+              )}
             </div>
-            {
-              item.seller.username==user.username ? 
+            {item.seller.username == user.username ? (
               <DeleteButton id={id} />
-              :
+            ) : (
               <></>
-            }
+            )}
           </div>
         ) : (
           <></>

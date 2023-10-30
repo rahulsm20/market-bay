@@ -8,15 +8,16 @@ export default {
     const { name, price, image } = req.body;
     const { originalname, buffer, mimetype } = req.file;
     try {
-      const key = `images/${uuidv4()}-${originalname}`;
-
+      const item_id = uuidv4()
+      var key = `images/${item_id}-${originalname}`;
       const params = {
         Bucket: "settyl-images",
         Key: key,
         Body: buffer,
         ContentType: mimetype,
       };
-
+      const encodedName = encodeURIComponent(originalname)
+      key = `images/${item_id}-${encodedName}`
       s3.putObject(params, async (error, data) => {
         if (error) {
           console.error(error);
@@ -59,7 +60,7 @@ export default {
   getItemById:async(req:Request,res:Response)=>{
     const {id} = req.params
     try{
-      const item = await itemModel.findById(id)
+      const item = await itemModel.findById(id).populate({path:"seller",select:"username id"})
       res.status(200).json(item)
     }
     catch(err){

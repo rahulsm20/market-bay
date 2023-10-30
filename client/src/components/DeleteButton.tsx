@@ -14,7 +14,7 @@ const DeleteButton = ({id}:{id:string|undefined}) => {
     }
   }
   return (
-    <button onClick={handleDelete} className="btn btn-transparent hover:bg-red-600 bg-red-500 normal-case text-black btn-sm text-sm absolute lg:relative border"><img src="/trash.svg" className='w-4'/>Delete</button>
+    <button onClick={handleDelete} className="btn btn-transparent hover:bg-red-600 bg-red-500 normal-case text-black btn-sm text-sm absolute lg:relative border mt-5"><img src="/trash.svg" className='w-4'/>Delete</button>
   );
 };
 

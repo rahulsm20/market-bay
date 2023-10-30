@@ -13,7 +13,6 @@ const Navbar = () => {
     const res = await verify(token);
     dispatch(setAuthenticated(res.authenticated))
     dispatch(setUser(res.user))
-    console.log(res)
   };
   const isAuthenticated = useSelector((state:RootState)=>state.authData.authenticated)
   const user = useSelector((state:RootState)=>state.authData.user)
@@ -21,7 +20,7 @@ const Navbar = () => {
     authenticate();
   }, []);
   return (
-    <div className="top-0 m-0 bg-gray-900 p-5">
+    <nav className="top-0 m-0 bg-gray-900 p-5">
       <ul className="flex gap-5 justify-between items-center">
         <div className="flex gap-2">
           <li>
@@ -42,7 +41,7 @@ const Navbar = () => {
             <Link to="/login" className="btn btn-transparent hover:bg-white bg-slate-200 normal-case text-black btn-sm text-sm">Login</Link>
         )}
       </ul>
-    </div>
+    </nav>
   );
 };
 
