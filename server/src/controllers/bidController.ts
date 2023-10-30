@@ -34,5 +34,15 @@ export default {
         catch(err){
             res.status(400).json(`${err}`)
         }
+    },
+    updateBid:async(req:Request,res:Response)=>{
+        const {id}= req.params
+        try{
+            const bid = await bidModel.findByIdAndUpdate(id,...req.body)
+            res.status(202).json(bid)
+        }
+        catch(err){
+            res.status(400).json(`${err}`)
+        }
     }
 }

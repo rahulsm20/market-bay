@@ -34,6 +34,7 @@ export type RootState = {
   authData:{
     authenticated:boolean,
     user:{
+      id:string;
       username:string;
       email:string
     }
@@ -42,7 +43,7 @@ export type RootState = {
 
 export type BidType = {
   item_id:string;
-  price:number
+  price:number|null
   user:{
     username:string;
     email:string;

@@ -12,6 +12,12 @@ const itemSchema = new mongoose.Schema(
     image: {
       url: { type: String, required: true },
     },
+    sold:{type:Boolean,required:true,default:false},
+    bids:[{
+      user: {type:mongoose.Schema.Types.ObjectId, ref:'users'},
+      price:{type:Number,required:true},
+      item:{type:mongoose.Schema.Types.ObjectId,ref:'items'}
+    }],
   },
   { timestamps: true }
 );

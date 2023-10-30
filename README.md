@@ -1,4 +1,4 @@
-# Market Bay  
+# Market Bay 🚢🌊
 
 ### Tech stack
 * React + Typescript

@@ -9,5 +9,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 router.post('/create',auth,upload.single('image'),itemController.createItem)
 router.get('/',itemController.getItems)
 router.get('/:id',itemController.getItemById)
-router.delete('/:id',itemController.deleteItem)
+router.delete('/:id',auth,itemController.deleteItem)
+router.post(`/:id`,auth,itemController.addBid)
+router.patch(`/:id`,auth,itemController.updateBid)
 export default router

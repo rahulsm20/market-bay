@@ -5,5 +5,6 @@ const router = express.Router()
 
 router.post(`/`,auth,bidController.addBid)
 router.get(`/:id`,bidController.getBids)
+router.patch(`/:id`,bidController.updateBid)
 
 export default router 

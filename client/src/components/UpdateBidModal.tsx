@@ -1,12 +1,11 @@
 import { useRef, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { addBid } from "../api";
+import { useDispatch, useSelector } from "react-redux";
+import { updateBid } from "../api";
 import { updateBids } from "../store/itemSlice";
-import { useSelector } from "react-redux";
 import { RootState } from "../types";
 
-const BidModal = ({ id }: { id: string }) => {
+const UpdateBidModal = ({ id }: { id: string }) => {
   const modalRef = useRef<HTMLDialogElement | null>(null);
   const [added, setAdded] = useState(false);
   const { register, handleSubmit } = useForm();
@@ -22,8 +21,8 @@ const BidModal = ({ id }: { id: string }) => {
     try {
       data.user = user.id
       data.item = item?._id
-      const bids = await addBid(data, id);
-      dispatch(updateBids(bids));
+      const bid = await updateBid(data, id);
+      dispatch(updateBids(bid));
       setAdded(true)
     } catch (err) {
       console.log(`${err}`);
@@ -32,7 +31,7 @@ const BidModal = ({ id }: { id: string }) => {
   return (
     <div className="flex m-5">
       <button onClick={openModal} className="bg-blue-500 hover:bg-blue-600">
-        Click to bid
+        Update bid
       </button>
       <dialog className="modal p-10 backdrop-blur-sm" ref={modalRef}>
         <div className="bg-gray-900 w-1/2 p-10 rounded-xl">
@@ -70,4 +69,4 @@ const BidModal = ({ id }: { id: string }) => {
   );
 };
 
-export default BidModal;
+export default UpdateBidModal;

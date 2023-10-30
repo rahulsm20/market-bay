@@ -4,11 +4,10 @@ import { BidType } from "../types";
 interface ItemState {
   items: ItemType[];
   item: ItemType | undefined;
-  bids:BidType[],
-  highestBid:BidType
+  highestBid: BidType | undefined;
 }
 
-export type ItemType ={
+export type ItemType = {
   _id: string;
   name: string;
   price: number;
@@ -19,22 +18,45 @@ export type ItemType ={
   image: {
     url: string;
   };
+  bids: BidType[];
   createdAt: string;
   updatedAt: string;
-}
+};
 
 const initialState: ItemState = {
   items: [],
-  item: undefined,
-  bids:[],
-  highestBid:{
-    item_id:"",
-    user:{
-      username:"",
-      email:""
+  item: {
+    _id: "",
+    name: "",
+    price: 0,
+    bids: [
+      {
+        item_id: "",
+        price: null,
+        user: {
+          username: "",
+          email: "",
+        },
+      },
+    ],
+    seller: {
+      username: "",
+      email: "",
     },
-    price:0
-  }
+    image: {
+      url: "",
+    },
+    createdAt: "",
+    updatedAt: "",
+  },
+  highestBid: {
+    item_id: "",
+    user: {
+      username: "",
+      email: "",
+    },
+    price: 0,
+  },
 };
 
 const filterSlice = createSlice({
@@ -50,15 +72,23 @@ const filterSlice = createSlice({
     getItemByID: (state, action) => {
       state.item = action.payload;
     },
-    setBids:(state,action)=>{
-      state.bids = action.payload
-      state.highestBid = state.bids.reduce((max, item) => (item.price > max.price ? item : max), state.bids[0]);
+    getHighestBid: (state) => {
+      state.highestBid = state.highestBid = state.item?.bids.reduce(
+        (max, item) => {
+          if (item && max && item.price && max.price) {
+            return item.price > max.price ? item : max;
+          }
+          return max;
+        },
+        state.item.bids[0]
+      );
     },
-    updateBids:(state,action)=>{
-      state.bids.push(action.payload)
+    updateBids: (state, action) => {
+      state?.item?.bids.push(action.payload);
     },
   },
 });
 
-export const { setItems, addItem, getItemByID,setBids ,updateBids} = filterSlice.actions;
+export const { setItems, addItem, getItemByID, getHighestBid, updateBids } =
+  filterSlice.actions;
 export default filterSlice.reducer;

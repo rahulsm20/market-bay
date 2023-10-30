@@ -4,8 +4,8 @@ export const formatDate= (dateString:string)=>{
     return formattedDate
 }
 
-export const formatPrice = (price:number)=>{
-    return price.toLocaleString("en-IN", {
+export const formatPrice = (price:number|null)=>{
+    return price?.toLocaleString("en-IN", {
         style: "currency",
         currency: "INR",
       })

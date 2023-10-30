@@ -49,8 +49,17 @@ export const createItem = async(data:FieldValues)=>{
 
 export const addBid  = async(data:FieldValues,id:string)=>{
     try{
-        data.item_id = id
-        const res = await api.post(`/bids/`,data)
+        const res = await api.post(`/items/${id}`,data)
+        return res.data
+    }
+    catch(err){
+        console.log(`${err}`)
+    }
+}
+
+export const updateBid  = async(data:FieldValues,id:string)=>{
+    try{
+        const res = await api.patch(`/items/${id}`,data)
         return res.data
     }
     catch(err){
