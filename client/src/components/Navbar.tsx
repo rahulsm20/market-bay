@@ -7,20 +7,23 @@ import { useSelector } from "react-redux";
 import { RootState } from "../types";
 
 const Navbar = () => {
+  
   const token = sessionStorage.getItem("access_token") || "";
   const dispatch = useDispatch();
-  const authenticate = async () => {
-    const res = await verify(token);
-    dispatch(setAuthenticated(res.authenticated));
-    dispatch(setUser(res.user));
-  };
+
   const isAuthenticated = useSelector(
     (state: RootState) => state.authData.authenticated
-  );
-  const user = useSelector((state: RootState) => state.authData.user);
-  useEffect(() => {
+    );
+    const user = useSelector((state: RootState) => state.authData.user);
+
+    useEffect(() => {
+    const authenticate = async () => {
+      const res = await verify(token);
+      dispatch(setAuthenticated(res.authenticated));
+      dispatch(setUser(res.user));
+    };
     authenticate();
-  }, []);
+  }, [dispatch,token]);
   return (
     <nav className="top-0 m-0 border-b border-gray-700 p-5 sticky backdrop-blur-sm grid grid-cols-2 lg:grid-cols-3 justify-between items-center z-10 text-xs sm:text-base">
       <img src="/ship.svg" className="w-10 hidden lg:block" />

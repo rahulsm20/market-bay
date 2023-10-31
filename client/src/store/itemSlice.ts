@@ -36,6 +36,7 @@ const initialState: ItemState = {
         item_id: "",
         price: null,
         user: {
+          _id:"",
           username: "",
           email: "",
         },
@@ -54,6 +55,7 @@ const initialState: ItemState = {
   highestBid: {
     item_id: "",
     user: {
+      _id:"",
       username: "",
       email: "",
     },
