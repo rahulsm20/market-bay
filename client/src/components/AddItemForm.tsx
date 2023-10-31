@@ -11,8 +11,7 @@ const AddItemForm = () => {
       formData.append("name", data.name);
       formData.append("price", data.price);
       formData.append("image", data.image[0]); 
-      const res = await createItem(formData);
-      console.log(res);
+      await createItem(formData);
       navigate("/")
     }
     catch(err){

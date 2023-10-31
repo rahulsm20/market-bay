@@ -10,6 +10,7 @@ import { ItemType, getHighestBid, getItemByID } from "../store/itemSlice";
 import { BidType, RootState } from "../types";
 import { formatDate, formatPrice } from "../utils";
 import UpdateBidModal from "../components/UpdateBidModal";
+import SellButton from "../components/SellButton";
 
 const ItemPage = () => {
   const { id } = useParams();
@@ -48,7 +49,6 @@ const ItemPage = () => {
   }, [dispatch, id]);
 
   if (loading) {
-    console.log("here");
     return (
       <div className="flex justify-center items-center">
         <img src="https://i.stack.imgur.com/87Tpa.gif" />
@@ -77,20 +77,18 @@ const ItemPage = () => {
                         <p className="flex font-medium text-primary text-xl line-through">
                           {formatPrice(item.price)}
                         </p>
-                        <p>Current highest bid</p>
+                        <p className="flex">Current highest bid</p>
                         <p className="text-indigo-300 flex text-2xl">
                           {formatPrice(highestBid.price)}
                         </p>
                         {item.sold ? (
                           !(user.username == item.seller.username) ? (
-                            <p>Item has been sold</p>
+                            <p className="text-xl bg-green-600 text-white p-2 rounded-xl my-2 font-bold">Item has been sold ✅</p>
                           ) : (
                             <></>
                           )
                         ) : user.username == item.seller.username ? (
-                          <button className="btn btn-transparent hover:bg-white bg-slate-200 normal-case text-black btn-sm text-sm w-15 flex justify-center items-center">
-                            Sell
-                          </button>
+                          <SellButton/>
                         ) : (
                           <></>
                         )}
@@ -119,12 +117,15 @@ const ItemPage = () => {
                   <></>
                 )}
                 {!isAuthenticated ? (
+                  !item.sold ?
                   <a
                     href="/login"
                     className="flex btn bg-slate-200 hover:bg-slate-50 justify-start items-center normal-case text-black hover:text-black mt-5"
                   >
                     Login to bid on this item
                   </a>
+                  :
+                  <></>
                 ) : item.seller.username != user?.username && !item.sold ? (
                   item?.bids.find(
                     (bid) => bid?.user?.username == user?.username
@@ -149,7 +150,7 @@ const ItemPage = () => {
                           <div>
                             <p className="flex gap-4">
                               {bid?.user?.username}
-                              <span className="text-green-400">
+                              <span className="text-indigo-400">
                                 {bid?.price?.toLocaleString("en-IN", {
                                   style: "currency",
                                   currency: "INR",

@@ -55,12 +55,20 @@ const Navbar = () => {
           </Link>
         </li>
       ) : (
-        <Link
-          to="/login"
-          className="btn btn-transparent hover:bg-white bg-slate-200 normal-case text-black btn-sm text-sm w-20"
-        >
-          Login
-        </Link>
+        <div className="flex justify-end gap-5">
+          <Link
+            to="/login"
+            className="btn btn-transparent hover:bg-white bg-slate-200 normal-case text-black btn-sm text-sm w-20"
+          >
+            Login
+          </Link>
+          <Link
+            to="/signup"
+            className="btn btn-transparent hover:bg-white bg-slate-200 normal-case text-black btn-sm text-sm w-20"
+          >
+            Signup
+          </Link>
+        </div>
       )}
     </nav>
   );

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { login, signup, verify } from "../api";
+import { Link } from "react-router-dom";
 const SignupForm = () => {
   const { register, handleSubmit } = useForm();
   const [loading, setLoading] = useState(false);
@@ -58,6 +59,10 @@ const SignupForm = () => {
           </button>
         )}
         {error ? <p className="text-red-500">Please enter valid credentials</p> : <></>}
+        <p>
+          Already have an account?
+          <Link to='/login' className="text-indigo-400"> Login here </Link>
+          </p>
       </form>
     </div>
   );

@@ -46,6 +46,7 @@ export type BidType = {
   item_id:string;
   price:number|null
   user:{
+    _id:string;
     username:string;
     email:string;
   }

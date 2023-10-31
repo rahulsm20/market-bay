@@ -87,9 +87,9 @@ export const deleteItem = async(id:string|undefined)=>{
     }
 }
 
-export const sellitem = async(id:string,user:string,item:string)=>{
+export const sellitem = async(id:string|undefined,user:string,price:number|null)=>{
     try{
-        const res = await api.post(`/items/sell/${id}`,{user,item})
+        const res = await api.post(`/items/sell/${id}`,{user,price})
         return res.data
     }
     catch(err){
